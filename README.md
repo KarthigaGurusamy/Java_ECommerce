@@ -8,9 +8,10 @@ This java console application for E-Commerce has the following sections:
     3. Home - User
         * View Categories 
             - View products based on category.
-        * View Products 
-        * View Cart 
             - Add products to cart.
+        * View Products 
+            - Add products to cart.
+        * View Cart 
             - Check out products from cart.
         * View Order 
         * Logout
