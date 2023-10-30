@@ -76,8 +76,8 @@ Working on the following sections
 
 Credentials 
 -----------
-  -> For Login use the following credentials
-      *Email = "a" | Password = "a"
+  ▶️ For Login use the following credentials
+      📧Email = "a" | 🔐Password = "a"
 
 
 Screenshots
