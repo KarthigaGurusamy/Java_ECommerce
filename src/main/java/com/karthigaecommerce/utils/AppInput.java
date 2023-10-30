@@ -23,4 +23,16 @@ public class AppInput {
         }
         return input;
     }
+    public static double enterDouble(String msg) throws AppException {
+        AppOutput.print(msg);
+        double input;
+        try{
+            input = Double.parseDouble(getScanner().nextLine());
+        }
+        catch (Exception e)
+        {
+            throw new AppException(StringUtil.INVALID_CHOICE);
+        }
+        return input;
+    }
 }

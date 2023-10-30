@@ -14,7 +14,7 @@ public class AppController implements IAppController {
 
     public AppController() {
         this.welcomePage = new WelcomePage();
-        this.authController= new AuthController(this);
+        this.authController= new AuthController();
     }
 
     @Override
@@ -23,8 +23,5 @@ public class AppController implements IAppController {
         authController.authMenu();
     }
 
-    @Override
-    public void printAuthMenu() {
-        welcomePage.printAuthMenu();
-    }
+
 }

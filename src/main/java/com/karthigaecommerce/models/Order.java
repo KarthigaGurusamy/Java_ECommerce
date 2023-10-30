@@ -6,9 +6,34 @@ import java.util.Date;
 
 public class Order {
     private int id;
+    private User user;
     private Date date;
 
-    private ArrayList<Cart> carts;
+    private Product product;
+
+    public User getUser() {
+        return user;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Order(int id, User user, Date date, Product product) {
+        this.id = id;
+        this.date = date;
+        this.product=product;
+        this.user=user;
+    }
+
 
     public int getId() {
         return id;
@@ -27,11 +52,4 @@ public class Order {
     }
 
 
-    public ArrayList<Cart> getCarts() {
-        return carts;
-    }
-
-    public void setCarts(ArrayList<Cart> carts) {
-        this.carts = carts;
-    }
 }

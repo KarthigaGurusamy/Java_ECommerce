@@ -11,7 +11,5 @@ public class WelcomePage {
 
     }
 
-    public void printAuthMenu() {
-        println(StringUtil.MENU);
-    }
+
 }

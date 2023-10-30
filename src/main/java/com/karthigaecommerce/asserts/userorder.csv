@@ -1,0 +1,5 @@
+id,userId,date,productId,productName,price,count
+70,2,30/10/2023,1,Black Shirt,1000.0,1
+82,50,30/10/2023,2,White Shirt,1500.0,1
+17,2,30/10/2023,1,Black Shirt,1000.0,2
+33,50,30/10/2023,2,White Shirt,1500.0,2

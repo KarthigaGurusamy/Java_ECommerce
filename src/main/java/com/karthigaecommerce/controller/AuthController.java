@@ -1,56 +1,77 @@
 package com.karthigaecommerce.controller;
 
-import com.karthigaecommerce.App;
 import com.karthigaecommerce.controller.Implementation.IAuthController;
-import com.karthigaecommerce.models.Role;
-import com.karthigaecommerce.models.User;
+import com.karthigaecommerce.models.*;
 import com.karthigaecommerce.utils.AppException;
-import com.karthigaecommerce.utils.AppInput;
 import com.karthigaecommerce.utils.StringUtil;
+import com.karthigaecommerce.views.AuthPage;
 import com.karthigaecommerce.views.LoginPage;
 import com.karthigaecommerce.views.RegisterPage;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import static com.karthigaecommerce.utils.AppInput.enterInteger;
 import static com.karthigaecommerce.utils.AppInput.enterString;
 import static com.karthigaecommerce.utils.AppOutput.println;
 import static com.karthigaecommerce.utils.FileUtil.getCredentialsFile;
-import static com.karthigaecommerce.utils.FileUtil.getCredentialsFolder;
+import static com.karthigaecommerce.utils.UserUtil.setLoggedInUser;
+import static java.lang.Integer.parseInt;
+
 
 public class AuthController implements IAuthController {
 
-    private final AppController appController;
+
     private final HomeController homeController;
-    private  final LoginPage loginPage;
+    private final LoginPage loginPage;
     private final RegisterPage registerPage;
 
-    public AuthController(AppController appController) {
-        this.appController = appController;
+    private final AuthPage authPage;
+    private final AdminController adminController;
+
+    public AuthController() {
+
         this.homeController = new HomeController();
         this.loginPage = new LoginPage();
         this.registerPage = new RegisterPage();
+        this.authPage = new AuthPage();
+        this.adminController = new AdminController();
     }
 
 
-    void setStaticUsers()  {
+    private static ArrayList<User> userData = new ArrayList<>();
+
+    public static ArrayList<User> getUserArray() {
+        return userData;
+    }
+
+    ArrayList<User> getUserDataFromFile() {
+        ArrayList<User> userData = new ArrayList<>();
         try {
-            boolean isFolder = getCredentialsFolder("src/main/java/com/karthigaecommerce/asserts");
-        } catch (Exception e) {
+            Scanner scanner = new Scanner(getCredentialsFile());
+            while (scanner.hasNext()) {
+                String[] value = scanner.next().split(",");
+                if (!value[0].equals("id")) {
 
+                    User user = new User(parseInt(value[0]), value[1], value[2], value[3], Role.valueOf(value[4]));
+                    userData.add(user);
+
+                }
+            }
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
         }
+        return userData;
     }
-
-
 
     @Override
     public void authMenu() {
-        setStaticUsers();
-        appController.printAuthMenu();
+        userData = getUserDataFromFile();
+        authPage.printAuthMenu();
         int choice;
         try {
             choice = enterInteger(StringUtil.CHOICE);
@@ -67,6 +88,7 @@ public class AuthController implements IAuthController {
         }
 
     }
+
     private void invalidException(AppException e) {
         println(e.getMessage());
         authMenu();
@@ -75,60 +97,36 @@ public class AuthController implements IAuthController {
 
     @Override
     public void login() {
+
         String email = enterString(StringUtil.ENTER_EMAIL);
         String password = enterString(StringUtil.ENTER_PASSWORD);
 
-        boolean isUser = ValidateUser(email,password);
+        boolean isUser = ValidateUser(email, password);
 
-        if(isUser)
-        {
-            homeController.printMenu();
-        }
-        else
-        {
+        if (isUser) {
+            if(email.equals("karthiga@admin.com"))
+            {
+                adminController.adminMenu();
+            }
+            else
+            {
+                homeController.printMenu();
+
+            }
+        } else {
             loginPage.printInvalidCredentials();
             authMenu();
         }
 
     }
 
-    public boolean ValidateUser(String email,String password) {
-        try {
-            Scanner scanner = new Scanner(getCredentialsFile());
-            while (scanner.hasNext()) {
-                String[] value = scanner.next().split(",");
-                if(!value[0].equals("id"))
-                {
-                    if (value[2].equals(email) && value[3].equals(password)) {
-                        if(value[0].equals("1") || value[0].equals("2"))
-                        {
-                            User user = new User();
-                            user.setId(Integer.parseInt(value[0]));
-                            user.setName(value[1]);
-                            user.setEmail(value[2]);
-                            user.setPassword(value[3]);
-                            String[] emailSplit = value[2].split("@");
-                            if (emailSplit[1].equals("admin.com"))
-                            {
-                                user.setRole(Role.ADMIN);
-
-                            }
-                            else
-                            {
-                                user.setRole(Role.USER);
-                            }
-
-                        }
-
-                        return true;
-                    }
-                }
+    public boolean ValidateUser(String email, String password) {
+        ArrayList<User> userData = getUserArray();
+        for (User user : userData) {
+            if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
+                setLoggedInUser(user);
+                return true;
             }
-            scanner.close();
-
-
-        } catch (Exception ex) {
-            println(ex.getMessage());
         }
         return false;
     }
@@ -142,27 +140,34 @@ public class AuthController implements IAuthController {
         confirm_password = enterString(StringUtil.ENTER_CONFIRM_PASSWORD);
 
         if (password.equals(confirm_password)) {
+            FileWriter csvWriter = null;
             try {
-                FileWriter csvWriter = new FileWriter(getCredentialsFile(), true);
+                csvWriter = new FileWriter(getCredentialsFile(), true);
                 int id = (int) (Math.random() * 100);
+                String role = "";
+                if (email.contains("admin")) {
+                    role = Role.ADMIN.toString();
+                } else {
+                    role = Role.USER.toString();
+                }
                 csvWriter.append("\n");
-                csvWriter.append(id + "," + name + "," + email + "," + password);
+                csvWriter.append(id + "," + email + "," + password + "," + name + "," + role);
                 csvWriter.flush();
                 csvWriter.close();
-
                 registerPage.printRegistrationSuccessful();
-            } catch (Exception e) {
+
+                authMenu();
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+
         } else {
             registerPage.passwordMisMatch();
+            authMenu();
         }
-        authMenu();
 
     }
 
-    @Override
-    public void logout() {
 
-    }
+
 }

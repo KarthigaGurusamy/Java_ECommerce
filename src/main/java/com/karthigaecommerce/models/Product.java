@@ -6,11 +6,22 @@ import java.sql.Timestamp;
 
 public class Product {
     private int id;
+    private Category category;
     private String title;
     private String description;
     private double price;
     private int stocks;
-    private Category category;
+
+    public Product(int id,Category category, String title, String description, double price, int stocks ) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.stocks = stocks;
+        this.category = category;
+    }
+
+
 
     public int getId() {
         return id;
@@ -40,10 +51,8 @@ public class Product {
         return price;
     }
 
-    public void setPrice(double price) throws AppException {
-        if (price <= 0) {
-            throw new AppException("Price cannot be null");
-        }
+    public void setPrice(double price) {
+
         this.price = price;
     }
 

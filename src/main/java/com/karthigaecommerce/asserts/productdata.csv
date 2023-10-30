@@ -1,0 +1,5 @@
+id,categoryId,title,description,price,stocks
+1,1,Black Shirt,New Trendy Shirt,1000,10
+2,1,White Shirt,New Trendy Shirt,1500,10
+3,2,Black Pant,New Trendy Pant,2000,10
+4,2,White Pant,New Trendy Pant,1500,10

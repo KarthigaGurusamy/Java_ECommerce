@@ -10,24 +10,16 @@ public class User {
     private String name;
     private Role role;
 
-    public Cart getUserCart() {
-        return userCart;
+    public User(int id, String email, String password, String name, Role role) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.role = role;
+
     }
 
-    public void setUserCart(Cart userCart) {
-        this.userCart = userCart;
-    }
 
-    public ArrayList<Order> getUserOrders() {
-        return userOrders;
-    }
-
-    public void setUserOrders(ArrayList<Order> userOrders) {
-        this.userOrders = userOrders;
-    }
-
-    private Cart userCart;
-    private ArrayList<Order> userOrders;
 
     public int getId() {
         return id;

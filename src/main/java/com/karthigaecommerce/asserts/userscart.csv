@@ -1,0 +1,4 @@
+id,userId,productId,categoryId,title,description,price,stocks,count
+43,50,1,1,Black Shirt,New Trendy Shirt,2000.0,10,2
+0,50,2,1,White Shirt,New Trendy Shirt,1500.0,10,1
+51,50,3,2,Black Pant,New Trendy Pant,2000.0,10,1

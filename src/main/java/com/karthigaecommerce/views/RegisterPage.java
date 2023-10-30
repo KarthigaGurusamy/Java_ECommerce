@@ -11,4 +11,6 @@ public class RegisterPage {
     public void printRegistrationSuccessful() {
         println(StringUtil.REGISTRATION_SUCCESSFUL);
     }
+
+
 }

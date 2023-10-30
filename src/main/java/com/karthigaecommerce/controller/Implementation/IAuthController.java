@@ -6,5 +6,4 @@ public interface IAuthController {
     void login();
     void register();
 
-    void logout();
 }
