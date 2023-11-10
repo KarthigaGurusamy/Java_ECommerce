@@ -27,8 +27,8 @@ This java console application for E-Commerce has the following sections:
         👀 View Orders 
         📤 Logout
 
--> '💻-Java' for coding 
--> '📁-CSV' file for storing and retrieving data.
+    -> '💻-Java' for coding 
+    -> '📁-CSV' file for storing and retrieving data.
 
 Files used for each sections:
 -----------------------------
